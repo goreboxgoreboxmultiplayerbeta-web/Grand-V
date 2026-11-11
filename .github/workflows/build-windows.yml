@@ -1,0 +1,23 @@
+name: Build GrandV Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Compile launcher
+        working-directory: LauncherApp/rust
+        run: cargo build --locked --release
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: GrandV-Windows
+          path: LauncherApp/rust/target/release/gta-browser-launcher.exe
+          if-no-files-found: error
